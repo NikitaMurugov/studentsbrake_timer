@@ -8,16 +8,16 @@ const days = {
     7:'воскресенье'
 };
 const monday_lessons = [
-    '8:20:0',
-    '9:0:0',
-    '9:45:0',
-    '10:25:0',
-    '11:20:0',
-    '12:0:0',
-    '12:45:0',
-    '13:25:0',
-    '14:10:0',
-    '14:50:0',
+    '08:20:00-08:55:00',
+    '09:00:00-09:35:00',
+    '09:45:00-10:20:00',
+    '10:25:00-11:00:00',
+    '11:20:00-11:55:00',
+    '12:00:00-12:35:00',
+    '12:45:00-13:20:00',
+    '13:25:00-14:00:00',
+    '14:10:00-14:45:00',
+    '14:50:00-15:25:00',
 ];
 const everyday_lessons = [
     '08:20:00-09:05:00',
@@ -34,13 +34,14 @@ const everyday_lessons = [
     '18:45:00-19:30:00',
 ];
 const saturday_lessons = [
-    '8:20:0',
-    '9:50:0',
-    '11:20:0',
-    '12:50:0',
-    '14:20:0',
-    '15:50:0'
+    '08:20:00-09:40:00',
+    '09:50:00-11:10:00',
+    '11:20:00-12:40:00',
+    '12:50:00-14:10:00',
+    '14:20:00-15:40:00',
+    '15:50:00-17:10:00'
 ];
+
 
 function check_day(days) {
     let today = new Date().getDay();
@@ -84,6 +85,14 @@ let breakTimer = new Vue({
         endCouple: ""
 
     },
+    watch: {
+        lNumber: {
+            handler(val, oldVal) {
+                breakTimer.ring();
+            },
+            deep: true
+        },
+    },
     created() {
         setInterval(this.getNow, 1000);
         setInterval(this.check_lesson, 1000);
@@ -123,10 +132,10 @@ let breakTimer = new Vue({
                 let e = lesson[1].split (d);
                     e = e [0]* s * s + e [1] * s + +e [2];
                 let t = new Date;
-                let time = [t.getHours(), t.getMinutes(), t.getSeconds()].map(function (x) {
+                let time = [t.getHours(), t.getMinutes()].map(function (x) {
                     return x < 10 ? "0" + x : x
                 });
-                t = time[0] * s * s + time[1] * s + time[2];
+                t = time[0] * s * s + time[1] * s + t.getSeconds();
                 if (t >= b && t <= e) {
                     if (lesson_number % 2 === 0) {
                         this.endCouple = "конец пары - <b>" + lesson[1] + "</b>";
@@ -164,3 +173,4 @@ let breakTimer = new Vue({
 
     }
 });
+
