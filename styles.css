@@ -1,0 +1,32 @@
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Dela Gothic One;
+    color: #474747;
+    background: #fbeaff;
+}
+
+
+.content {
+    width: 1100px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.numbers {
+    font-family: Montserrat;
+    text-transform: uppercase;
+    font-weight: 400;
+    width: 1100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.time {
+    font-size: 90px;
+}
