@@ -249,6 +249,7 @@ stream_blocks.forEach(function (el) {
         el.classList.add('active');
         if (el.id === 'first_stream') {
             breakTimer.stream = 1;
+            let message = 'Вы выбрали 1 поток';
 
             let forModal = document.querySelector('.for-modal');
             forModal.innerHTML =
@@ -258,15 +259,15 @@ stream_blocks.forEach(function (el) {
                 '                Сообщение\n' +
                 '            </div>\n' +
                 '            <hr>\n' +
-                '            <div class="modal-text"> {{ message }}</div>\n' +
+                '            <div class="modal-text"> '+message +'</div>\n' +
                 '        </div>\n' +
                 '    </div>';
             setTimeout(function (ev) {
                 forModal.innerHTML='';
-            }, 1000)
+            }, 1500)
         } else if (el.id === 'second_stream'){
             breakTimer.stream = 2;
-
+            let message = 'Вы выбрали 2 поток';
             let forModal = document.querySelector('.for-modal');
             forModal.innerHTML =
                 '    <div class="modal-window">\n' +
@@ -275,12 +276,12 @@ stream_blocks.forEach(function (el) {
                 '                Сообщение\n' +
                 '            </div>\n' +
                 '            <hr>\n' +
-                '            <div class="modal-text"> {{ message }}</div>\n' +
+                '            <div class="modal-text"> ' + message + ' </div>\n' +
                 '        </div>\n' +
                 '    </div>';
             setTimeout(function (ev) {
                 forModal.innerHTML='';
-            }, 1000)
+            }, 1500)
         }
     });
 });
