@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
+    <title>ПЕРЕМЕНКИ</title>
 </head>
 <body>
     <div class="content" id="break_timer">
@@ -22,10 +22,15 @@
             <div class="number couple_lesson" v-html="coupleNumber"></div>
         </div>
         <div class="time" >
-            {{ timestamp }}
+            <div class="time-card">{{ hour }}</div>
+            <span>:</span>
+            <div class="time-card">{{ minute }}</div>
+            <span>:</span>
+            <div class="time-card">{{ second }}</div>
         </div>
         <div class="numbers">
             <div class="number next_break" v-html="nextBreak"> </div>
+
             <div class="number end_couple" v-html="endCouple"></div>
         </div>
     </div>

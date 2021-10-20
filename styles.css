@@ -8,6 +8,12 @@ body {
     font-size: 16px;
 }
 
+b  {
+    background: #8684c8;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 2px;
+}
 
 .content {
     z-index: 10;
@@ -40,6 +46,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 26px;
+    font-weight: 700;
 }
 .couple_lesson, .end_couple {
     text-align: right;
@@ -47,4 +54,17 @@ body {
 
 .time {
     font-size: 120px;
+    display: flex;
 }
+
+.time-card {
+    width: 220px;
+    height: 200px;
+    background: rgba(173, 171, 255, 0.23);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+}
+

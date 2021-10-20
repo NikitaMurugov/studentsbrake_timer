@@ -77,7 +77,9 @@ function check_timetable() {
 let breakTimer = new Vue({
     el: '#break_timer',
     data: {
-        timestamp: "",
+        hour: "",
+        minute: "",
+        second: "",
         today: check_day(days),
         lNumber: "",
         nextBreak: "",
@@ -98,15 +100,18 @@ let breakTimer = new Vue({
         setInterval(this.check_lesson, 1000);
     },
     methods: {
-        getNow: function() {
+        getNow: function()
+        {
             const today = new Date();
             let time = [today.getHours(), today.getMinutes(), today.getSeconds()].map(function (x) {
                 return x < 10 ? "0" + x : x
-            }).join(":");
-            this.timestamp = time;
+            });
+            this.hour = time[0];
+            this.minute = time[1];
+            this.second = time[2];
         },
-
-        check_timetable: function () {
+        check_timetable: function ()
+        {
             let today = new Date().getDay();
             switch (today) {
                 case 1:
@@ -117,7 +122,6 @@ let breakTimer = new Vue({
                     return everyday_lessons;
             }
         },
-
         check_lesson: function()
         {
             let lesson_list = check_timetable();
@@ -161,16 +165,15 @@ let breakTimer = new Vue({
                 }
 
             }
-            this.nextBreak = '<b>Перемена<b>';
-            return this.lNumber = '<b>Урок закончен<b>';
+            this.nextBreak = '<b>Перемена</b>';
+            return this.lNumber = '<b>Урок закончен</b>';
         },
-
-        ring: function () {
+        ring: function ()
+        {
             var audio = new Audio();
             audio.src = 'sound/airport-bell.mp3';
             audio.autoplay = true;
         }
-
     }
 });
 
