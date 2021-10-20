@@ -30,11 +30,17 @@
         </div>
         <div class="numbers">
             <div class="number next_break" v-html="nextBreak"> </div>
-
+            <div class="number streams">
+                <div class="stream" id="first_stream">1 поток</div>
+                <div class="stream active" id="second_stream">2 поток</div>
+            </div>
             <div class="number end_couple" v-html="endCouple"></div>
         </div>
-    </div>
 
+
+    </div>
+    <div class="for-modal"></div>
+    <script src="scripts/components/ModalWindow.vue" type="text/x-template" id="modal-template"></script>
     <script src="scripts/script.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 body {
+    margin: 0;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -6,6 +7,10 @@ body {
     font-family: Dela Gothic One;
     color: #474747;
     font-size: 16px;
+}
+
+div {
+    box-sizing: border-box;
 }
 
 b  {
@@ -68,3 +73,80 @@ b  {
     margin: 0 10px;
 }
 
+.streams {
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stream {
+    box-sizing: border-box;
+    width: 100px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.stream.active {
+    font-weight: 700;
+    background: #8684c8;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 2px;
+}
+
+/* СТИЛИ МОДАЛЬНОГО ОКНА*/
+
+.modal-window {
+    font-family: Montserrat;
+    z-index: 20;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0,0,0,0.48);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 150ms;
+}
+.modal-box {
+    width: 300px;
+    background: #f4f4f4;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.modal-box * {
+    margin-bottom: 20px;
+}
+.modal-box hr {
+    width: 75%;
+    border: 1px solid rgba(178, 177, 255, 0.75);
+    margin-top: 0;
+}
+
+.modal-title {
+    font-size: 24px;
+}
+.modal-button {
+    width: 50px;
+    border-radius: 5px;
+    color: #f4f4f4;
+    font-weight: 700;
+    height: 30px;
+    background: #8684c8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 0;
+}

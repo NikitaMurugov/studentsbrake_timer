@@ -7,6 +7,42 @@ const days = {
     6:'суббота',
     7:'воскресенье'
 };
+
+const fs_monday_lessons = [
+    '08:00:00-08:35:00',
+    '08:40:00-09:15:00',
+    '09:25:00-10:00:00',
+    '10:05:00-10:40:00',
+    '11:00:00-11:35:00',
+    '11:40:00-12:15:00',
+    '12:25:00-13:00:00',
+    '13:05:00-13:40:00',
+    '13:50:00-14:25:00',
+    '14:30:00-15:05:00',
+];
+const fs_everyday_lessons = [
+    '08:00:00-08:45:00',
+    '08:55:00-09:40:00',
+    '09:50:00-10:35:00',
+    '10:45:00-10:30:00',
+    '11:50:00-12:35:00',
+    '12:45:00-13:30:00',
+    '13:50:00-14:35:00',
+    '14:45:00-15:30:00',
+    '15:40:00-16:25:00',
+    '16:35:00-17:20:00',
+    '17:30:00-18:15:00',
+    '18:25:00-19:10:00',
+];
+const fs_saturday_lessons = [
+    '08:00:00-09:20:00',
+    '09:30:00-10:50:00',
+    '11:00:00-12:20:00',
+    '12:30:00-13:50:00',
+    '14:00:00-15:20:00',
+    '15:30:00-16:50:00'
+];
+
 const monday_lessons = [
     '08:20:00-08:55:00',
     '09:00:00-09:35:00',
@@ -29,7 +65,7 @@ const everyday_lessons = [
     '14:10:00-14:55:00',
     '15:05:00-15:50:00',
     '16:00:00-16:45:00',
-    '16:54:00-17:40:00',
+    '16:55:00-17:40:00',
     '17:50:00-18:35:00',
     '18:45:00-19:30:00',
 ];
@@ -62,16 +98,29 @@ function check_day(days) {
             return days['7'];
     }
 }
-function check_timetable() {
+function check_timetable(stream) {
+
     let today = new Date().getDay();
-    switch (today) {
-        case 1:
-            return monday_lessons;
-        case 6:
-            return saturday_lessons;
-        default:
-            return everyday_lessons;
+    if(stream === 1) {
+        switch (today) {
+            case 1:
+                return fs_monday_lessons;
+            case 6:
+                return fs_saturday_lessons;
+            default:
+                return fs_everyday_lessons;
+        }
+    } else {
+        switch (today) {
+            case 1:
+                return monday_lessons;
+            case 6:
+                return saturday_lessons;
+            default:
+                return everyday_lessons;
+        }
     }
+
 }
 
 let breakTimer = new Vue({
@@ -84,7 +133,9 @@ let breakTimer = new Vue({
         lNumber: "",
         nextBreak: "",
         coupleNumber: "",
-        endCouple: ""
+        timetable: {},
+        endCouple: "",
+        stream: 2
 
     },
     watch: {
@@ -94,6 +145,17 @@ let breakTimer = new Vue({
             },
             deep: true
         },
+        stream: {
+            handler(val, oldVal) {
+                let modal = document.querySelector('.modal-window');
+                modal.style.opacity = 1;
+                setTimeout(function (ev) {
+                    modal.style.opacity = 0;
+                }, 500);
+                this.check_lesson();
+            },
+            deep: true
+        }
     },
     created() {
         setInterval(this.getNow, 1000);
@@ -124,7 +186,7 @@ let breakTimer = new Vue({
         },
         check_lesson: function()
         {
-            let lesson_list = check_timetable();
+            let lesson_list = check_timetable(this.stream);
             let lesson_number = 0;
             for ( let val of lesson_list ) {
                 lesson_number++;
@@ -177,3 +239,48 @@ let breakTimer = new Vue({
     }
 });
 
+
+let stream_blocks = document.querySelectorAll('.stream');
+stream_blocks.forEach(function (el) {
+    el.addEventListener('click', function (ev) {
+        stream_blocks.forEach(function (el) {
+            el.classList.remove('active');
+        });
+        el.classList.add('active');
+        if (el.id === 'first_stream') {
+            breakTimer.stream = 1;
+
+            let forModal = document.querySelector('.for-modal');
+            forModal.innerHTML =
+                '    <div class="modal-window">\n' +
+                '        <div class="modal-box">\n' +
+                '            <div class="modal-title">\n' +
+                '                Сообщение\n' +
+                '            </div>\n' +
+                '            <hr>\n' +
+                '            <div class="modal-text"> {{ message }}</div>\n' +
+                '        </div>\n' +
+                '    </div>';
+            setTimeout(function (ev) {
+                forModal.innerHTML='';
+            }, 1000)
+        } else if (el.id === 'second_stream'){
+            breakTimer.stream = 2;
+
+            let forModal = document.querySelector('.for-modal');
+            forModal.innerHTML =
+                '    <div class="modal-window">\n' +
+                '        <div class="modal-box">\n' +
+                '            <div class="modal-title">\n' +
+                '                Сообщение\n' +
+                '            </div>\n' +
+                '            <hr>\n' +
+                '            <div class="modal-text"> {{ message }}</div>\n' +
+                '        </div>\n' +
+                '    </div>';
+            setTimeout(function (ev) {
+                forModal.innerHTML='';
+            }, 1000)
+        }
+    });
+});
