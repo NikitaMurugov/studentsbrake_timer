@@ -150,3 +150,119 @@ b  {
     cursor: pointer;
     margin-bottom: 0;
 }
+
+
+
+@media screen and (max-width: 1200px) {
+    .content {
+        width: 700px;
+        height: 600px;
+    }
+    .numbers {
+        width: 700px;
+    }
+
+    .numbers * {
+        width: 200px;
+        text-align: center;
+    }
+    .next_break, .end_couple{
+        width: 150px;
+    }
+    .timetable {
+        text-align: center  ;
+    }
+    .streams {
+        flex-direction: column;
+    }
+    .stream {
+
+    }
+    .time {
+        font-size: 90px;
+    }
+
+}
+@media screen and (max-width: 860px) {
+
+    .content {
+        width: 480px;
+    }
+
+    .lesson, .couple_lesson {
+        height: 50px;
+    }
+    .next_break, .end_couple{
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
+    }
+    .numbers {
+        width: 480px;
+    }
+    .number {
+        width: 120px;
+        height: 100px;
+    }
+    .numbers * b {
+        background: none;
+
+        text-align: center;
+        color: #474747;
+    }
+    .time {
+        font-size: 60px;
+    }
+    .time-card {
+        width: 120px;
+        height: 100px;
+    }
+}
+@media screen and (max-width: 550px) {
+    .content {
+        width: 400px;
+        font-size: 14px;
+    }
+    .numbers {
+        width: 400px;
+    }
+    .stream {
+        width: 120px
+    }
+
+    .lesson, .couple_lesson {
+        justify-content: flex-end;
+        height: 50px;
+    }
+
+    .number {
+        width: 120px;
+        height: 20px;
+        align-items:center;
+        justify-content: center;
+
+    }
+    .next_break, .end_couple{
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+    .numbers * b {
+        background: none;
+
+        text-align: center;
+        color: #474747;
+    }
+    .timetable {
+        font-size: 18px;
+    }
+    .time {
+        font-size: 60px;
+    }
+    .time-card {
+        width: 120px;
+        height: 100px;
+    }
+}
