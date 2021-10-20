@@ -5,7 +5,6 @@ body {
     align-items: center;
     font-family: Dela Gothic One;
     color: #474747;
-    background: #fbeaff;
 }
 
 
@@ -25,6 +24,18 @@ body {
     width: 1100px;
     display: flex;
     justify-content: space-between;
+}
+.numbers * {
+    width: 300px;
+}
+.timetable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.couple_lesson, .end_couple {
+    text-align: right;
 }
 
 .time {

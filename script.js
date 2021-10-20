@@ -20,29 +20,19 @@ const monday_lessons = [
     '14:50:0',
 ];
 const everyday_lessons = [
-    '8:20:0-9:5:0',
-    '9:15:0-10:0:0',
-    '10:10:0-10:55:0',
-    '11:5:0-10:50:0',
-    '12:10:0-12:55:0',
-    '13:5:0-13:50:0',
-    '14:10:0-14:55:0',
-    '15:5:0-15:50:0',
-    '16:0:0-16:25:0',
-    '16:28:0-17:40:0',
-    '17:50:0-18:35:0',
-    '18:45:0-19:30:0',
+    '08:20:00-09:05:00',
+    '09:15:00-10:00:00',
+    '10:10:00-10:55:00',
+    '11:05:00-10:50:00',
+    '12:10:00-12:55:00',
+    '13:05:00-13:50:00',
+    '14:10:00-14:55:00',
+    '15:05:00-15:50:00',
+    '16:00:00-16:45:00',
+    '16:54:00-17:40:00',
+    '17:50:00-18:35:00',
+    '18:45:00-19:30:00',
 ];
-const dada_lessons = [
-    '1:7',
-    '1:8',
-    '1:9',
-    '1:10',
-    '1:11',
-    '1:12',
-];
-
-
 const saturday_lessons = [
     '8:20:0',
     '9:50:0',
@@ -51,10 +41,6 @@ const saturday_lessons = [
     '14:20:0',
     '15:50:0'
 ];
-function check_hour(lesson_list) {
-
-
-}
 
 function check_day(days) {
     let today = new Date().getDay();
@@ -87,21 +73,15 @@ function check_timetable() {
     }
 }
 
-let lesionList = check_timetable();
-
-// let timetable = new Vue({
-//     el: "#timetable",
-//     data: {
-//         today: check_day(days)
-//     },
-// });
-
 let breakTimer = new Vue({
     el: '#break_timer',
     data: {
         timestamp: "",
         today: check_day(days),
-        lNumber: ""
+        lNumber: "",
+        nextBreak: "",
+        coupleNumber: "",
+        endCouple: ""
 
     },
     created() {
@@ -111,10 +91,9 @@ let breakTimer = new Vue({
     methods: {
         getNow: function() {
             const today = new Date();
-            const hour = today.getHours();
-            const minutes = today.getMinutes();
-            const seconds = today.getSeconds();
-            const time = hour + ":" + minutes + ":" + seconds;
+            let time = [today.getHours(), today.getMinutes(), today.getSeconds()].map(function (x) {
+                return x < 10 ? "0" + x : x
+            }).join(":");
             this.timestamp = time;
         },
 
@@ -140,67 +119,48 @@ let breakTimer = new Vue({
                 var s = 60,
                     d = ':',
                     b = lesson[0].split (d),
-                    b = b [0]* s * s + b [1] * s + +b [2],
-                    e = lesson[1].split (d),
-                    e = e [0]* s * s + e [1] * s + +e [2],
-                    t = new Date,
-                    t = t.getHours () * s * s + t.getMinutes () * s + t.getSeconds ();
+                    b = b [0]* s * s + b [1] * s + +b [2];
+                let e = lesson[1].split (d);
+                    e = e [0]* s * s + e [1] * s + +e [2];
+                let t = new Date;
+                let time = [t.getHours(), t.getMinutes(), t.getSeconds()].map(function (x) {
+                    return x < 10 ? "0" + x : x
+                });
+                t = time[0] * s * s + time[1] * s + time[2];
                 if (t >= b && t <= e) {
-                    return this.lNumber = lesson_number;
+                    if (lesson_number % 2 === 0) {
+                        this.endCouple = "конец пары - <b>" + lesson[1] + "</b>";
+                        this.coupleNumber = '<b>' + lesson_number/2 + '</b> пара';
+                    } else  {
+                        let copleEnd = lesson_list[lesson_number+1] || lesson_list[lesson_number];
+                        this.endCouple = "конец пары - <b>" + copleEnd.split('-')[1] + "</b>";
+                        this.coupleNumber = '<b>' + (lesson_number+1) /2  + '</b> пара';
+                    }
+
+                    this.nextBreak = 'перемена - <b>'+lesson[1]+'</b>';
+                    return this.lNumber = '<b>' + lesson_number + '</b> урок';
+                } else {
+
+                    if (lesson_number % 2 === 0) {
+                        this.endCouple = "конец пары - <b>" + lesson[1] + "</b>";
+                        this.coupleNumber = '<b>' + lesson_number/2 + '</b> пара';
+                    } else  {
+                        let copleEnd = lesson_list[lesson_number+1] || lesson_list[lesson_number];
+                        this.endCouple = "конец пары - <b>" + copleEnd.split('-')[1] + "</b>";
+                        this.coupleNumber = '<b>' + (lesson_number+1) /2  + '</b> пара';
+                    }
                 }
+
             }
-            return this.lNumber = 'ПЕРЕМЕНА';
+            this.nextBreak = '<b>Перемена<b>';
+            return this.lNumber = '<b>Урок закончен<b>';
+        },
 
-
-
-            // let time = today.getHours() + ":" + today.getMinutes();
-            // let lesson_number = 0;
-            // time = time.split(':');
-            //
-            // for (let val of dada_lessons) {
-            //     lesson_number++;
-            //     let lestime = val.split(':');
-            //     if (time[0] === lestime[0] && time[1] === lestime[1]) {
-            //         this.lNumber = lesson_number;
-            //     } else if (time[0] === lestime[0] && time[1] >= lestime[1]) {
-            //         if (time[0] === lestime[0] && time[1] <= lestime[1]) {
-            //             this.lNumber = lesson_number;
-            //         }
-            //     }
-            // }
+        ring: function () {
+            var audio = new Audio();
+            audio.src = 'sound/airport-bell.mp3';
+            audio.autoplay = true;
         }
 
     }
 });
-
-// let lesson = new Vue({
-//    el: "#lesson",
-//    data: {
-//        lNumber: ""
-//    },
-//     created() {
-//         setInterval(this.check_hour, 1000);
-//     },
-//     methods: {
-//
-//         check_hour: function()
-//         {
-//             const today = new Date();
-//             let time = today.getHours() + ":" + today.getMinutes();
-//             let lesson_number = 0;
-//             time = time.split(':');
-//
-//             for (let val of dada_lessons) {
-//                 lesson_number++;
-//                 let lestime = val.split(':');
-//                 if (time[0] === lestime[0] && time[1] === lestime[1]) {
-//                     this.lNumber = lesson_number;
-//                 } else if (time[0] === lestime[0] && time[1] >= lestime[1]) {
-//                     if (time[0] === lestime[0] && time[1] <= lestime[1]) {
-//                         this.lNumber = lesson_number;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// });

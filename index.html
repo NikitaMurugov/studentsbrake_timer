@@ -5,8 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script><link rel="preconnect" href="https://fonts.googleapis.com">
-    <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script src="vue.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -17,16 +17,16 @@
 <body>
     <div class="content" id="break_timer">
         <div class="numbers">
-            <div class="number lesson"><b>{{ lNumber }}</b> урок</div>
-            <div class="timetable" id="timetable"> сегодня - {{ today }}</div>
-            <div class="number couple_lesson"><b id="couple_lesson">777</b> пара</div>
+            <div class="number lesson" v-html="lNumber"></div>
+            <div class="timetable"> сегодня - {{ today }}</div>
+            <div class="number couple_lesson" v-html="coupleNumber"></div>
         </div>
-        <div class="time" id="time">
+        <div class="time" >
             {{ timestamp }}
         </div>
         <div class="numbers">
-            <div class="number"> перемена в <b>777</b></div>
-            <div class="number"> конец пары в <b>777</b></div>
+            <div class="number next_break" v-html="nextBreak"> </div>
+            <div class="number end_couple" v-html="endCouple"></div>
         </div>
     </div>
 
