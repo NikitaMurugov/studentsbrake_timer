@@ -1,4 +1,4 @@
-let days = {
+const days = {
     1:'понедельник',
     2:'вторник',
     3:'среда',
@@ -19,7 +19,7 @@ const monday_lessons = [
     '14:10:0',
     '14:50:0',
 ];
-let everyday_lessons = [
+const everyday_lessons = [
     '8:20:0-9:5:0',
     '9:15:0-10:0:0',
     '10:10:0-10:55:0',
@@ -28,12 +28,12 @@ let everyday_lessons = [
     '13:5:0-13:50:0',
     '14:10:0-14:55:0',
     '15:5:0-15:50:0',
-    '16:0:0-16:45:0',
-    '16:55:0-17:40:0',
+    '16:0:0-16:25:0',
+    '16:28:0-17:40:0',
     '17:50:0-18:35:0',
     '18:45:0-19:30:0',
 ];
-let dada_lessons = [
+const dada_lessons = [
     '1:7',
     '1:8',
     '1:9',
@@ -53,23 +53,7 @@ const saturday_lessons = [
 ];
 function check_hour(lesson_list) {
 
-    let lesson_number = 0;
-    for ( let val of lesson_list ) {
-        lesson_number++;
-        let lesson_list = lesson_list.split('-');
-        let lestime = val.split(':');
-        var s = 60,
-            d = ':',
-            b = lesson_list[0].split (d),
-            b = b [0]* s * s + b [1] * s + +b [2],
-            e = lesson_list[1].split (d),
-            e = e [0]* s * s + e [1] * s + +e [2],
-            t = new Date,
-            t = t.getHours () * s * s + t.getMinutes () * s + t.getSeconds ();
-        if (t >= b && t <= e) {
-            return lesson_number;
-        }
-    }
+
 }
 
 function check_day(days) {
@@ -105,60 +89,118 @@ function check_timetable() {
 
 let lesionList = check_timetable();
 
-let timetable = new Vue({
-    el: "#timetable",
-    data: {
-        today: check_day(days)
-    },
-});
+// let timetable = new Vue({
+//     el: "#timetable",
+//     data: {
+//         today: check_day(days)
+//     },
+// });
 
-let time = new Vue({
-    el: '#time',
+let breakTimer = new Vue({
+    el: '#break_timer',
     data: {
-        timestamp: ""
+        timestamp: "",
+        today: check_day(days),
+        lNumber: ""
+
     },
     created() {
         setInterval(this.getNow, 1000);
+        setInterval(this.check_lesson, 1000);
     },
     methods: {
         getNow: function() {
             const today = new Date();
+            const hour = today.getHours();
             const minutes = today.getMinutes();
             const seconds = today.getSeconds();
-            const time = today.getHours() + ":" + minutes + ":" + seconds;
+            const time = hour + ":" + minutes + ":" + seconds;
             this.timestamp = time;
-        }
-    }
-});
+        },
 
-let lesson = new Vue({
-   el: "#lesson",
-   data: {
-       lNumber: ""
-   },
-    created() {
-        setInterval(this.check_hour, 1000);
-    },
-    methods: {
+        check_timetable: function () {
+            let today = new Date().getDay();
+            switch (today) {
+                case 1:
+                    return monday_lessons;
+                case 6:
+                    return saturday_lessons;
+                default:
+                    return everyday_lessons;
+            }
+        },
 
-        check_hour: function()
+        check_lesson: function()
         {
-            const today = new Date();
-            let time = today.getHours() + ":" + today.getMinutes();
+            let lesson_list = check_timetable();
             let lesson_number = 0;
-            time = time.split(':');
-
-            for (let val of dada_lessons) {
+            for ( let val of lesson_list ) {
                 lesson_number++;
-                let lestime = val.split(':');
-                if (time[0] === lestime[0] && time[1] === lestime[1]) {
-                    this.lNumber = lesson_number;
-                } else if (time[0] === lestime[0] && time[1] >= lestime[1]) {
-                    if (time[0] === lestime[0] && time[1] <= lestime[1]) {
-                        this.lNumber = lesson_number;
-                    }
+                let lesson = val.split('-');
+                var s = 60,
+                    d = ':',
+                    b = lesson[0].split (d),
+                    b = b [0]* s * s + b [1] * s + +b [2],
+                    e = lesson[1].split (d),
+                    e = e [0]* s * s + e [1] * s + +e [2],
+                    t = new Date,
+                    t = t.getHours () * s * s + t.getMinutes () * s + t.getSeconds ();
+                if (t >= b && t <= e) {
+                    return this.lNumber = lesson_number;
                 }
             }
+            return this.lNumber = 'ПЕРЕМЕНА';
+
+
+
+            // let time = today.getHours() + ":" + today.getMinutes();
+            // let lesson_number = 0;
+            // time = time.split(':');
+            //
+            // for (let val of dada_lessons) {
+            //     lesson_number++;
+            //     let lestime = val.split(':');
+            //     if (time[0] === lestime[0] && time[1] === lestime[1]) {
+            //         this.lNumber = lesson_number;
+            //     } else if (time[0] === lestime[0] && time[1] >= lestime[1]) {
+            //         if (time[0] === lestime[0] && time[1] <= lestime[1]) {
+            //             this.lNumber = lesson_number;
+            //         }
+            //     }
+            // }
         }
+
     }
 });
+
+// let lesson = new Vue({
+//    el: "#lesson",
+//    data: {
+//        lNumber: ""
+//    },
+//     created() {
+//         setInterval(this.check_hour, 1000);
+//     },
+//     methods: {
+//
+//         check_hour: function()
+//         {
+//             const today = new Date();
+//             let time = today.getHours() + ":" + today.getMinutes();
+//             let lesson_number = 0;
+//             time = time.split(':');
+//
+//             for (let val of dada_lessons) {
+//                 lesson_number++;
+//                 let lestime = val.split(':');
+//                 if (time[0] === lestime[0] && time[1] === lestime[1]) {
+//                     this.lNumber = lesson_number;
+//                 } else if (time[0] === lestime[0] && time[1] >= lestime[1]) {
+//                     if (time[0] === lestime[0] && time[1] <= lestime[1]) {
+//                         this.lNumber = lesson_number;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// });
