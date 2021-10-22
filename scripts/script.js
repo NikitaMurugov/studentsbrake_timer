@@ -151,7 +151,7 @@ let breakTimer = new Vue({
                 modal.style.opacity = 1;
                 setTimeout(function (ev) {
                     modal.style.opacity = 0;
-                }, 500);
+                }, 1000);
                 this.check_lesson();
             },
             deep: true

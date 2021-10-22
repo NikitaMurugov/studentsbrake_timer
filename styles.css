@@ -47,6 +47,7 @@ b  {
     width: 300px;
 }
 .timetable {
+    width: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -221,11 +222,11 @@ b  {
 }
 @media screen and (max-width: 550px) {
     .content {
-        width: 400px;
+        width: 350px;
         font-size: 14px;
     }
     .numbers {
-        width: 400px;
+        width: 350px;
     }
     .stream {
         width: 120px
@@ -259,10 +260,10 @@ b  {
         font-size: 18px;
     }
     .time {
-        font-size: 60px;
+        font-size: 45px;
     }
     .time-card {
-        width: 120px;
+        width: 100px;
         height: 100px;
     }
 }
