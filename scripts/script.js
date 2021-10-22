@@ -78,6 +78,10 @@ const saturday_lessons = [
     '15:50:00-17:10:00'
 ];
 
+const test_lessons = [
+    '23:39:00-23:40:00',
+    '23:41:00-23:42:00',
+];
 
 function check_day(days) {
     let today = new Date().getDay();
@@ -139,12 +143,6 @@ let breakTimer = new Vue({
 
     },
     watch: {
-        lNumber: {
-            handler(val, oldVal) {
-                breakTimer.ring();
-            },
-            deep: true
-        },
         stream: {
             handler(val, oldVal) {
                 let modal = document.querySelector('.modal-window');
@@ -188,53 +186,112 @@ let breakTimer = new Vue({
         {
             let lesson_list = check_timetable(this.stream);
             let lesson_number = 0;
-            for ( let val of lesson_list ) {
+            let lastLesson = null;
+            let nextLesson = null;
+            for (let val of lesson_list ) {
+                if (typeof lesson_list[lesson_number-1] !== 'undefined') {
+                    lastLesson = lesson_list[lesson_number-1].split('-') || null;
+                } else {
+                    lastLesson = null;
+                }
+                if (typeof lesson_list[lesson_number+1] !== 'undefined') {
+                    nextLesson = lesson_list[lesson_number+1].split('-') || null;
+                } else {
+                    nextLesson = null;
+                }
+
                 lesson_number++;
+
                 let lesson = val.split('-');
                 var s = 60,
                     d = ':',
                     b = lesson[0].split (d),
                     b = b [0]* s * s + b [1] * s + +b [2];
                 let e = lesson[1].split (d);
-                    e = e [0]* s * s + e [1] * s + +e [2];
+                e = e [0]* s * s + e [1] * s + +e [2];
                 let t = new Date;
                 let time = [t.getHours(), t.getMinutes()].map(function (x) {
                     return x < 10 ? "0" + x : x
                 });
                 t = time[0] * s * s + time[1] * s + t.getSeconds();
+
+                if (t === b) {
+                    this.ring();
+                }
+                if (t === e) {
+                    this.ring();
+                }
                 if (t >= b && t <= e) {
+                    // попал в промежуток урока
                     if (lesson_number % 2 === 0) {
                         this.endCouple = "конец пары - <b>" + lesson[1] + "</b>";
                         this.coupleNumber = '<b>' + lesson_number/2 + '</b> пара';
                     } else  {
-                        let copleEnd = lesson_list[lesson_number+1] || lesson_list[lesson_number];
-                        this.endCouple = "конец пары - <b>" + copleEnd.split('-')[1] + "</b>";
+                        if (nextLesson === null) {
+                            // последняя пара
+                            this.endCouple = "конец пары - <b>" + lesson[1] + "</b>";
+                        } else {
+                            let coupleEnd = lesson_list[lesson_number+1] || lesson_list[lesson_number];
+                            this.endCouple = "конец пары - <b>" + coupleEnd.split('-')[1] + "</b>";
+                        }
                         this.coupleNumber = '<b>' + (lesson_number+1) /2  + '</b> пара';
                     }
-
                     this.nextBreak = 'перемена - <b>'+lesson[1]+'</b>';
                     return this.lNumber = '<b>' + lesson_number + '</b> урок';
                 } else {
-
                     if (lesson_number % 2 === 0) {
-                        this.endCouple = "конец пары - <b>" + lesson[1] + "</b>";
-                        this.coupleNumber = '<b>' + lesson_number/2 + '</b> пара';
-                    } else  {
-                        let copleEnd = lesson_list[lesson_number+1] || lesson_list[lesson_number];
-                        this.endCouple = "конец пары - <b>" + copleEnd.split('-')[1] + "</b>";
-                        this.coupleNumber = '<b>' + (lesson_number+1) /2  + '</b> пара';
+                        this.coupleNumber = '<b>Перемена между парами</b>';
+                    }else  {
+                        this.coupleNumber = '<b>Перемена между уроками</b>';
                     }
-                }
+                    this.nextBreak = '<b>Перемена</b>';
+                    this.lNumber = '<b>Урок закончен</b>';
+                    if (lastLesson === null) {
+                        //Если  вдруг это  первая лекция
+                        let bNext = nextLesson[0].split (d);
+                        bNext = bNext [0]* s * s + bNext [1] * s + +bNext [2];
+                        if (bNext > t && t > e) {
+                            return this.endCouple = "<b>Конец перемены - " + lesson[1] + "</b>";
+                        } else if (t < bNext){
+                            // Если пары не начались
+                            this.lNumber = '<b>Урок не начался</b>';
+                            this.nextBreak = 'Начало пары - <b>'+ lesson[0] + '</b>';
+                            this.coupleNumber = '<b>Пара не началась</b>';
+                            return this.endCouple = "<b>Ждите начала</b>";
+                        }
+                    } else if (nextLesson === null){
+                        //Если  вдруг это  последняя лекция
+                        let eLast = lastLesson[1].split (d);
+                        eLast = eLast [0]* s * s + eLast [1] * s + +eLast [2];
+                        if (eLast < t && t < b) {
+                            return this.endCouple = "<b>Конец перемены - " + lesson[1] + "</b>";
+                        } else if (t > e){
+                            // Если все пары закончились
+                            this.nextBreak = '<b>Пары закончились</b>';
+                            this.coupleNumber = '<b>Пора домой</b>';
+                            return this.endCouple = "<b>Пары закончились</b>";
+                        }
+                    } else {
+                        // Если это лекция хоть где в середине
+                        let eLast = lastLesson[1].split (d) || null;
+                        eLast = eLast [0]* s * s + eLast [1] * s + +eLast [2];
+                        let bNext = nextLesson[0].split (d) || null;
+                        bNext = bNext [0]* s * s + bNext [1] * s + +bNext [2];
+                        if (bNext > t && t > e) {
+                            return this.endCouple = "<b>Конец перемены - " + nextLesson[0] + "</b>";
+                        } else if (eLast < t && t < b) {
+                            return this.endCouple = "<b>Конец перемены - " + lastLesson[1] + "</b>";
+                        }
+                    }
 
+                }
             }
-            this.nextBreak = '<b>Перемена</b>';
-            return this.lNumber = '<b>Урок закончен</b>';
         },
-        ring: function ()
-        {
+        ring: function(){
             var audio = new Audio();
-            audio.src = 'sound/airport-bell.mp3';
+            audio.src = 'sound/bell.mp3';
             audio.autoplay = true;
+            return true;
         }
     }
 });
