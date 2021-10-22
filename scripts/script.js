@@ -78,11 +78,6 @@ const saturday_lessons = [
     '15:50:00-17:10:00'
 ];
 
-const test_lessons = [
-    '23:39:00-23:40:00',
-    '23:41:00-23:42:00',
-];
-
 function check_day(days) {
     let today = new Date().getDay();
     switch (today) {
@@ -223,26 +218,37 @@ let breakTimer = new Vue({
                 }
                 if (t >= b && t <= e) {
                     // попал в промежуток урока
-                    if (lesson_number % 2 === 0) {
+                    if (new Date().getDay() === 6) {
                         this.endCouple = "конец пары - <b>" + lesson[1] + "</b>";
-                        this.coupleNumber = '<b>' + lesson_number/2 + '</b> пара';
-                    } else  {
-                        if (nextLesson === null) {
-                            // последняя пара
+                        this.coupleNumber = '<b>' + lesson_number  + '</b> пара';
+                        this.nextBreak = 'перемена - <b>'+lesson[1]+'</b>';
+                        return this.lNumber = '<b>' + lesson_number + '</b> урок';
+                    } else {
+                        if (lesson_number % 2 === 0) {
                             this.endCouple = "конец пары - <b>" + lesson[1] + "</b>";
-                        } else {
-                            let coupleEnd = lesson_list[lesson_number+1] || lesson_list[lesson_number];
-                            this.endCouple = "конец пары - <b>" + coupleEnd.split('-')[1] + "</b>";
+                            this.coupleNumber = '<b>' + lesson_number/2 + '</b> пара';
+                        } else  {
+                            if (nextLesson === null) {
+                                // последняя пара
+                                this.endCouple = "конец пары - <b>" + lesson[1] + "</b>";
+                            } else {
+                                let coupleEnd = lesson_list[lesson_number+1] || lesson_list[lesson_number];
+                                this.endCouple = "конец пары - <b>" + coupleEnd.split('-')[1] + "</b>";
+                            }
+                            this.coupleNumber = '<b>' + (lesson_number+1) /2  + '</b> пара';
                         }
-                        this.coupleNumber = '<b>' + (lesson_number+1) /2  + '</b> пара';
+                        this.nextBreak = 'перемена - <b>'+lesson[1]+'</b>';
+                        return this.lNumber = '<b>' + lesson_number + '</b> урок';
                     }
-                    this.nextBreak = 'перемена - <b>'+lesson[1]+'</b>';
-                    return this.lNumber = '<b>' + lesson_number + '</b> урок';
                 } else {
-                    if (lesson_number % 2 === 0) {
+                    if (new Date().getDay() === 6) {
                         this.coupleNumber = '<b>Перемена между парами</b>';
-                    }else  {
-                        this.coupleNumber = '<b>Перемена между уроками</b>';
+                    } else {
+                        if (lesson_number % 2 === 0) {
+                            this.coupleNumber = '<b>Перемена между парами</b>';
+                        }else  {
+                            this.coupleNumber = '<b>Перемена между уроками</b>';
+                        }
                     }
                     this.nextBreak = '<b>Перемена</b>';
                     this.lNumber = '<b>Урок закончен</b>';
@@ -283,6 +289,7 @@ let breakTimer = new Vue({
                             return this.endCouple = "<b>Конец перемены - " + lastLesson[1] + "</b>";
                         }
                     }
+
 
                 }
             }
