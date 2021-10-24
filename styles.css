@@ -1,10 +1,15 @@
+@font-face {
+    font-family: DelaGothicOne-Regular;
+    src: url('DelaGothicOne-Regular.ttf');
+}
+
 body {
     margin: 0;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Dela Gothic One;
+    font-family: DelaGothicOne-Regular;
     color: #474747;
     font-size: 16px;
 }
@@ -20,6 +25,28 @@ b  {
     border-radius: 2px;
 }
 
+.body-title {
+    text-transform: uppercase;
+    height: 70px;
+    position: fixed;
+    left: 50%;
+    top: 40px;
+    transform: translate(-50%, 0);
+    font-size: 55px;
+    display: flex;
+    align-items: center;
+    font-family: DelaGothicOne-Regular;
+}
+.body-footer {
+    position: fixed;
+    left: 50%;
+    bottom: 40px;
+    transform: translate(-50%, 0);
+}
+.logo {
+    width: 70px;
+    height: 70px;
+}
 .content {
     z-index: 10;
     width: 1100px;
@@ -207,6 +234,7 @@ b  {
     width: 100px;
     height: 30px;
     font-family: "Montserrat SemiBold";
+    cursor: pointer;
 }
 
 .modal-fade-enter,
@@ -220,116 +248,76 @@ b  {
 }
 
 
-@media screen and (max-width: 1200px) {
-    .content {
-        width: 700px;
-        height: 600px;
-    }
-    .numbers {
-        width: 700px;
-    }
-
-    .numbers * {
-        width: 200px;
-        text-align: center;
-    }
-    .next_break, .end_couple{
-        width: 150px;
-    }
-    .timetable {
-        text-align: center  ;
-    }
-    .streams {
-        flex-direction: column;
-    }
-    .stream {
-
-    }
-    .time {
-        font-size: 90px;
-    }
-
-}
-@media screen and (max-width: 860px) {
-
-    .content {
-        width: 480px;
-    }
-
-    .lesson, .couple_lesson {
-        height: 50px;
-    }
-    .next_break, .end_couple{
-        width: 100px;
-        display: flex;
-        flex-direction: column;
-        align-content: flex-start;
-    }
-    .numbers {
-        width: 480px;
-    }
-    .number {
-        width: 120px;
-        height: 100px;
-    }
-    .numbers * b {
-        background: none;
-
-        text-align: center;
-        color: #474747;
-    }
-    .time {
-        font-size: 60px;
-    }
-    .time-card {
-        width: 120px;
-        height: 100px;
-    }
-}
 @media screen and (max-width: 550px) {
     .content {
-        width: 350px;
+
+    width:350px;
+    font-size: 14px;
+    font-family: Montserrat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+	}
+
+	.numbers {
         font-size: 14px;
-    }
-    .numbers {
-        width: 350px;
-    }
-    .stream {
-        width: 120px
-    }
-
-    .lesson, .couple_lesson {
-        justify-content: flex-end;
-        height: 50px;
-    }
-
-    .number {
-        width: 120px;
-        height: 20px;
-        align-items:center;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+        align-items: center;
+	}
+	.number {
+        font-size: 14px;
+		width: 100px;
+        display: flex;
+        align-items: center;
         justify-content: center;
+	}
 
-    }
-    .next_break, .end_couple{
+	.numbers * b {
+
+        font-size: 14px;
+		background: none;
+
+		text-align: center;
+		color: #474747;
+	}
+	.timetable {
+		font-size: 18px;
+		width: 100px;
+		text-align: center;
+	}
+	.time {
+        font-family: Dela Gothic One;
+		display: flex;
+		font-size: 45px;
+	}
+	.time-card {
+		width: 100px;
+		height: 100px;
+		background: rgba(173, 171, 255, 0.23);
+		border-radius: 20px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0 10px;
+	}
+    .streams {
         width: 100px;
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
     }
-    .numbers * b {
-        background: none;
+	.streams > *{
+        font-size: 14px;
+		width: 100px;
+		height: 30px;
+		margin: 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+    .next_break, .end_couple {
+        width: 120px;
+    }
 
-        text-align: center;
-        color: #474747;
-    }
-    .timetable {
-        font-size: 18px;
-    }
-    .time {
-        font-size: 45px;
-    }
-    .time-card {
-        width: 100px;
-        height: 100px;
-    }
 }

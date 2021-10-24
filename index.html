@@ -17,6 +17,9 @@
     <title>ПЕРЕМЕНКИ</title>
 </head>
 <body>
+    <div class="body-title">
+        переменки
+    </div>
     <div class="content" id="break_timer">
         <div class="numbers">
             <div class="number lesson" v-html="lNumber"></div>
@@ -43,7 +46,18 @@
             <modal-body>Вы сменили поток!</modal-body>
         </modal>
     </div>
-
+<div class="body-footer">
+    <svg class="logo"  viewBox="0 0 209 209" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="104.5" cy="104.5" r="104.5" fill="#F5F5F5"/>
+        <mask id="mask0_2:19" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="209" height="209">
+            <circle cx="104.5" cy="104.5" r="104.5" fill="#C4C4C4"/>
+        </mask>
+        <g mask="url(#mask0_2:19)">
+            <path d="M60.572 75C52.6439 66.5 50.072 60.5 50.072 43C50.072 25.5 55.69 16.2549 50.072 -1.5L203 -41L248.072 119C241.488 133.318 227 139 215.072 138C203.144 137 190.5 138 180.072 145.5C169.644 153 152 151.5 140.072 142.5C128.144 133.5 115 127 105.072 127C95.1439 127 80.1439 116.5 78.572 104C77 91.5 68.5 83.5 60.572 75Z" fill="#8684C8"/>
+        </g>
+        <path d="M67.8475 141.5C57.866 113.944 56.9132 97.9599 67.8475 68C94.2735 82.1363 112.251 82.394 149.347 68C138.695 96.7035 138.028 112.796 149.347 141.5" stroke="#3E3E3E" stroke-width="25" stroke-linecap="round"/>
+    </svg>
+</div>
     <script type="text/x-template" id="modal">
         <transition name="modal-fade">
             <div class="modal-backdrop" role="dialog">
