@@ -124,6 +124,7 @@ function check_timetable(stream) {
 
 let breakTimer = new Vue({
     el: '#break_timer',
+    name: 'Break timer',
     data: {
         hour: "",
         minute: "",
@@ -134,21 +135,47 @@ let breakTimer = new Vue({
         coupleNumber: "",
         timetable: {},
         endCouple: "",
-        stream: 2
-
+        stream: 2,
+        isModalVisible: false,
     },
     watch: {
         stream: {
-            handler(val, oldVal) {
-                let modal = document.querySelector('.modal-window');
-                modal.style.opacity = 1;
-                setTimeout(function (ev) {
-                    modal.style.opacity = 0;
-                }, 1000);
-                this.check_lesson();
+            handler(newVal, oldVal){
+                this.modalSong();
+                let streamInput = document.querySelector('#stream-ring');
+                let streamDivs = document.querySelectorAll('.stream');
+                streamDivs.forEach(function (el) {
+                    if (el.classList.contains('active')) {
+                        el.classList.remove('active');
+                    }
+                });
+                if (newVal === 1) {
+                    streamDivs.item(0).classList.add('active');
+                } else {
+                    streamDivs.item(1).classList.add('active');
+                }
+            },
+            deep: true
+        },
+        lNumber: {
+            handler(newVal, oldVal) {
+                let lessonRing = document.querySelector('#lesson-ring');
+                lessonRing.value = newVal;
             },
             deep: true
         }
+    },
+
+    components: {
+        Modal: {
+            name: 'modal',
+            template: '#modal',
+            methods: {
+                close(event) {
+                    this.$emit('close');
+                },
+            },
+        },
     },
     created() {
         setInterval(this.getNow, 1000);
@@ -294,58 +321,33 @@ let breakTimer = new Vue({
                 }
             }
         },
-        ring: function(){
+        ring: function()
+        {
             var audio = new Audio();
             audio.src = 'sound/bell.mp3';
             audio.autoplay = true;
             return true;
+        },
+        modalSong: function()
+        {
+            var audio = new Audio();
+            audio.src = 'sound/modalSong.mp3';
+            audio.autoplay = true;
+            return true;
+        },
+        showModal: function(stream) {
+            if (this.stream !== stream) {
+                this.stream = stream;
+                this.isModalVisible = true;
+            }
+        },
+        closeModal: function(stream) {
+            this.isModalVisible = false;
         }
     }
 });
 
-
-let stream_blocks = document.querySelectorAll('.stream');
-stream_blocks.forEach(function (el) {
-    el.addEventListener('click', function (ev) {
-        stream_blocks.forEach(function (el) {
-            el.classList.remove('active');
-        });
-        el.classList.add('active');
-        if (el.id === 'first_stream') {
-            breakTimer.stream = 1;
-            let message = 'Вы выбрали 1 поток';
-
-            let forModal = document.querySelector('.for-modal');
-            forModal.innerHTML =
-                '    <div class="modal-window">\n' +
-                '        <div class="modal-box">\n' +
-                '            <div class="modal-title">\n' +
-                '                Сообщение\n' +
-                '            </div>\n' +
-                '            <hr>\n' +
-                '            <div class="modal-text"> '+message +'</div>\n' +
-                '        </div>\n' +
-                '    </div>';
-            setTimeout(function (ev) {
-                forModal.innerHTML='';
-            }, 1500)
-        } else if (el.id === 'second_stream'){
-            breakTimer.stream = 2;
-            let message = 'Вы выбрали 2 поток';
-            let forModal = document.querySelector('.for-modal');
-            forModal.innerHTML =
-                '    <div class="modal-window">\n' +
-                '        <div class="modal-box">\n' +
-                '            <div class="modal-title">\n' +
-                '                Сообщение\n' +
-                '            </div>\n' +
-                '            <hr>\n' +
-                '            <div class="modal-text"> ' + message + ' </div>\n' +
-                '        </div>\n' +
-                '    </div>';
-            setTimeout(function (ev) {
-                forModal.innerHTML='';
-            }, 1500)
-        }
-    });
+let lessonRing = document.querySelector('#lesson-ring');
+lessonRing.addEventListener('change', function (ev) {
+    breakTimer.ring();
 });

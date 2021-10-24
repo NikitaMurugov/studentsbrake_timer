@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
+
     <title>ПЕРЕМЕНКИ</title>
 </head>
 <body>
@@ -32,16 +33,45 @@
         <div class="numbers">
             <div class="number next_break" v-html="nextBreak"> </div>
             <div class="streams">
-                <div class="stream" id="first_stream">1 поток</div>
-                <div class="stream active" id="second_stream">2 поток</div>
+                <div class="stream" id="first_stream" @click="showModal(1)">1 поток</div>
+                <div class="stream active" id="second_stream" @click="showModal(2)">2 поток</div>
             </div>
             <div class="number end_couple" v-html="endCouple"></div>
         </div>
-
-
+        <input id="lesson-ring" type="text" hidden>
+        <modal v-show="isModalVisible" @close="closeModal">
+            <modal-body>Вы сменили поток!</modal-body>
+        </modal>
     </div>
-    <div class="for-modal"></div>
-    <script src="scripts/components/ModalWindow.vue" type="text/x-template" id="modal-template"></script>
-    <script src="scripts/script.js"></script>
+
+    <script type="text/x-template" id="modal">
+        <transition name="modal-fade">
+            <div class="modal-backdrop" role="dialog">
+                <div class="modal" ref="modal">
+                    <header class="modal-header">
+                        <slot name="header" @click="close">
+                            Сообщение
+                        </slot>
+                    </header>
+
+                    <section class="modal-body">
+                        <slot name="body">
+                            Вы сменили поток!
+                        </slot>
+                    </section>
+
+                    <footer class="modal-footer">
+                        <slot name="footer">
+                            <button type="button" class="btn btn-green" @click="close" aria-label="Close modal">
+                                Хорошо
+                            </button>
+                        </slot>
+                    </footer>
+                </div>
+            </div>
+        </transition>
+    </script>
+
+    <script type="module" src="scripts/script.js" ></script>
 </body>
 </html>
